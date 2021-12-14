@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # Load env variables
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'Please-generate-a-private key')  # TODO: Generar un key seguro
+SECRET_KEY = os.getenv('SECRET_KEY', 'i#@)dq4s#a@7y!dx7=qcb5kutuss@4n3_wezhkn&p!kvcgpagx')
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '*']  # TODO: dejar solo la URL donde va a estar disponible

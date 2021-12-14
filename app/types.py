@@ -8,7 +8,9 @@ class PlanetType(DjangoObjectType):
     class Meta:
         model = Planet
         interfaces = (graphene.relay.Node,)
-        filter_fields = {'name': ['iexact', 'icontains', 'contains', 'exact'], }
+        filter_fields = {
+            'name': ['iexact', 'icontains', 'contains', 'exact'],
+        }
 
 
 class PeopleType(DjangoObjectType):
@@ -19,7 +21,10 @@ class PeopleType(DjangoObjectType):
     class Meta:
         model = People
         interfaces = (graphene.relay.Node,)
-        filter_fields = {'name': ['iexact', 'icontains', 'contains', 'exact'], 'gender': ['exact']}
+        filter_fields = {
+            'name': ['iexact', 'icontains', 'contains', 'exact'],
+            'gender': ['exact']
+        }
         convert_choices_to_enum = False
 
 
@@ -39,6 +44,8 @@ class ProducerType(DjangoObjectType):
 
 class FilmType(DjangoObjectType):
     # TODO: Agregar choices para el episode_id
+    episode = graphene.Enum('EpisodeEnum', Film.Episodes.choices)
+    
     class Meta:
         model = Film
         interfaces = (graphene.relay.Node,)
@@ -47,3 +54,4 @@ class FilmType(DjangoObjectType):
             'episode_id': ['exact'],
             'release_date': ['exact']
         }
+        convert_choices_to_enum = False

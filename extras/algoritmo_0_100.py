@@ -1,7 +1,7 @@
 
 def print_sequence_until(last):
-    """Prints the sequence of numbers taking into account 
-    if they are even numbers it adds "buzz" to the line, 
+    """Prints the sequence of numbers taking into account
+    if they are even numbers it adds "buzz" to the line,
     if its a multiple of 5, it adds "bazz"
 
     Args:
@@ -14,6 +14,7 @@ def print_sequence_until(last):
         if i % 5 == 0:
             message += " bazz"
         print(message)
+
 
 if __name__ == '__main__':
     print_sequence_until(100)
