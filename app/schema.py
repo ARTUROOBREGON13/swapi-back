@@ -5,7 +5,7 @@ from graphene_django.types import DjangoObjectType
 from graphql_relay.node.node import from_global_id
 
 from .models import Planet, People, Film, Director, Producer
-from .mutations import AddOrUpdatePlanetMutation
+from .mutations import AddOrUpdatePlanetMutation, CreatePeopleMutation
 from .types import PlanetType, PeopleType, FilmType, DirectorType, ProducerType
 
 
@@ -28,3 +28,4 @@ class Query(graphene.ObjectType):
 
 class Mutation(graphene.ObjectType):
     add_or_update_planet_mutation = AddOrUpdatePlanetMutation.Field()
+    create_people_mutation = CreatePeopleMutation.Field()
