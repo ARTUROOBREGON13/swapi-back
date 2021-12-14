@@ -1,8 +1,8 @@
 import graphene
 from graphql_relay import from_global_id
 
-from .models import Planet
-from .types import PlanetType
+from .models import People, Planet
+from .types import PeopleType, PlanetType
 from .utils import generic_model_mutation_process
 
 
@@ -31,3 +31,34 @@ class AddOrUpdatePlanetMutation(graphene.relay.ClientIDMutation):
 
         planet = generic_model_mutation_process(**data)
         return AddOrUpdatePlanetMutation(planet=planet)
+    
+class CreatePeopleMutation(graphene.relay.ClientIDMutation):
+    class Input:
+        id = graphene.ID(required=False)
+        height = graphene.String(required=False)
+        mass = graphene.String(required=False)
+        hair_color = graphene.Enum("PeopleHairEnum", People.HAIR_COLOR)
+        skin_color = graphene.String(required=False)
+        eye_color = graphene.Enum("PeopleEyeEnum", People.EYE_COLOR)
+        birth_year = graphene.String(required=False)
+        gender = graphene.Enum("PeopleHairEnum", People.GENDER)
+        home_world = graphene.ID(required=True)
+        
+    people = graphene.Field(PeopleType)
+    
+    @classmethod
+    def mutate_and_get_payload(cls, root, info, **input):
+        home_world = input.get("home_world", None)
+        films = input.pop("films", None)
+        
+        data = {
+            "model": People,
+            "data": input
+        }
+        if home_world:
+            data["data"]["home_world"] = Planet.objects.get(
+                id=from_global_id(home_world)[1],
+            )
+
+        people = generic_model_mutation_process(**data)
+        return CreatePeopleMutation(people=people)
