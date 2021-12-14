@@ -6,7 +6,7 @@ from .types import PeopleType, PlanetType
 from .utils import generic_model_mutation_process
 
 
-class AddOrUpdatePlanetMutation(graphene.relay.ClientIDMutation):
+class CreateOrUpdatePlanetMutation(graphene.relay.ClientIDMutation):
     class Input:
         id = graphene.ID(required=False)
         name = graphene.String(required=True)
@@ -30,9 +30,9 @@ class AddOrUpdatePlanetMutation(graphene.relay.ClientIDMutation):
             data['id'] = from_global_id(raw_id)[1]
 
         planet = generic_model_mutation_process(**data)
-        return AddOrUpdatePlanetMutation(planet=planet)
+        return CreateOrUpdatePlanetMutation(planet=planet)
     
-class CreatePeopleMutation(graphene.relay.ClientIDMutation):
+class CreateOrUpdatePeopleMutation(graphene.relay.ClientIDMutation):
     class Input:
         id = graphene.ID(required=False)
         height = graphene.String(required=False)
@@ -48,6 +48,8 @@ class CreatePeopleMutation(graphene.relay.ClientIDMutation):
     
     @classmethod
     def mutate_and_get_payload(cls, root, info, **input):
+        raw_id = input.get('id', None)
+        
         home_world = input.get("home_world", None)
         films = input.pop("films", None)
         
@@ -55,10 +57,13 @@ class CreatePeopleMutation(graphene.relay.ClientIDMutation):
             "model": People,
             "data": input
         }
+        if raw_id:
+            data['id'] = from_global_id(raw_id)[1]
+        
         if home_world:
             data["data"]["home_world"] = Planet.objects.get(
                 id=from_global_id(home_world)[1],
             )
 
         people = generic_model_mutation_process(**data)
-        return CreatePeopleMutation(people=people)
+        return CreateOrUpdatePeopleMutation(people=people)
